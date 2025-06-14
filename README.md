@@ -73,3 +73,6 @@ Word: "Italy"
 These results suggest that the quantized approach can maintain high accuracy while providing a significant performance improvement.
 
 
+# Example
+
+<img width="519" alt="Screenshot 2025-06-14 alle 08 41 06" src="https://github.com/user-attachments/assets/e5d7f424-643a-4223-ab63-cb91228ff3f8" />
