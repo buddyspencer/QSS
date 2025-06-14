@@ -3,7 +3,8 @@
 
 This software is an experiment on embedding vector quantization, with the goal of analyzing its accuracy and performance compared to standard floating-point representations.
 
-📚 Dataset
+# 📚 Dataset 👀...🟡 
+
 The experiments use the GloVe 6B dataset, with pre-trained embeddings of the following dimensions:
 
 50
@@ -14,7 +15,8 @@ The experiments use the GloVe 6B dataset, with pre-trained embeddings of the fol
 
 300
 
-⚙️ How It Works
+# ⚙️ How It Works 👀...🟡 
+
 Loading the embedding file
 The .txt file containing the embeddings is loaded into memory. Each word is associated with its vector, which is then quantized and stored in a dedicated data structure.
 
@@ -38,19 +40,22 @@ The results are sorted in descending order by similarity.
 Standard Cosine Similarity Search:
 As a baseline, a cosine similarity search is performed using the input word’s original embedding against all embeddings, without quantization.
 
-🧪 Goals of the Experiment
+# 🧪 Goals of the Experiment 👀...🟡 
+
 Assess how quantization affects semantic search accuracy.
 
 Measure potential gains in speed and memory usage.
 
 Evaluate the scalability of the method with increasing embedding dimensions.
 
-🚧 Technical Note
+# 🚧 Technical Note 👀...🟡 
+
 Word lookup in the embedding dictionary is performed linearly. This is not optimized intentionally, as the goal is to assess the impact of quantization on search quality, not access speed.
 
 
 
-📊 Preliminary Results
+# 📊 Preliminary Results 👀...🟡 
+
 While only a limited number of experiments have been conducted so far, the initial results are promising:
 
 Word: "hello"
