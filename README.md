@@ -30,7 +30,9 @@ For the input word, two types of vector searches are performed:
 QSS (Quantized Similarity Search):
 A bitwise XOR is computed between the quantized embedding of the input word and all the quantized embeddings in memory.
 
-If the number of differing bits (i.e., number of 1s in the XOR result) is ≤ TOTAL_1_CHECK, the candidate word is selected.
+If the number of different bits (i.e., number of 1s in the XOR result) is ≤ TOTAL_1_CHECK, the candidate word is selected.
+
+Use TOTAL_1_CHECK to tune your solution.
 
 For these selected words, the cosine similarity is calculated using the original (non-quantized) embeddings.
 
