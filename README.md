@@ -1,4 +1,4 @@
-# 🔍 QSS - Quantized Similarity Search (Just an experiment for fun)
+# 🔍 QSS - Quantized Similarity Search 
 
 This software is an experiment on embedding vector quantization, with the goal of analyzing its accuracy and performance compared to standard floating-point representations.
 
