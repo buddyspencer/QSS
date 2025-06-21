@@ -4,20 +4,20 @@ This software is an experiment on embedding vector quantization, with the goal o
 
 # 📚 Dataset 👀...🟡 
 
-The experiments use the GloVe 6B dataset, with pre-trained embeddings of the following dimensions:
+The experiments use 
+- the GloVe 6B dataset embedding https://nlp.stanford.edu/projects/glove/
+- word2vec https://code.google.com/archive/p/word2vec/
+  
 
-50
-
-100
-
-200
-
-300
 
 # ⚙️ How It Works 👀...🟡 
 
 Loading the embedding file
-The .txt file containing the embeddings is loaded into memory. Each word is associated with its vector, which is then quantized and stored in a dedicated data structure.
+For Glove the file is in .txt format for word2vec is in binary format. 
+Both file containing the embeddings, this is loaded into memory. Each word is associated with its vector, which is then quantized and stored in a dedicated data structure.
+
+to load glove file digit ./qss --glove <filename.txt>
+to load word2vec file digit ./qss --word2vec <filename.bin>
 
 User interaction
 Once the embeddings are loaded, the program prompts the user to input a word.
