@@ -62,6 +62,7 @@ Word lookup in the embedding dictionary is performed linearly. This is not optim
 
 While only a limited number of experiments have been conducted so far, the initial results are promising:
 
+## with GloVe:
 Word: "hello"
 → ✅ 100% accuracy on the top 30 retrieved items
 → ⚡ 3× faster search time compared to standard cosine similarity
@@ -70,13 +71,33 @@ Word: "men"
 → ✅ 90% accuracy on the top 30
 → ⚡ 3× faster
 
-Word: "Italy"
+Word: "italy"
 → ✅ 100% accuracy
 → ⚡ 3× faster
+
+## with word2vec:
+word "hello"
+→ ✅ 100% accuracy on the top 30
+→ ⚡ 18× faster
+
+man "men"
+→ ✅ 100% accuracy on the top 30
+→ ⚡ 18× faster
+
+man "italy"
+→ ✅ 100% accuracy on the top 30
+→ ⚡ 18× faster
+
 
 These results suggest that the quantized approach can maintain high accuracy while providing a significant performance improvement.
 
 
 # Example
+## With GloVe
 
 <img width="519" alt="Screenshot 2025-06-14 alle 08 41 06" src="https://github.com/user-attachments/assets/e5d7f424-643a-4223-ab63-cb91228ff3f8" />
+
+
+## With word2vec
+
+<img width="492" alt="Screenshot 2025-06-21 alle 18 42 48" src="https://github.com/user-attachments/assets/941136d4-15b4-4b30-afe1-e5868dc72939" />
