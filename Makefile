@@ -1,7 +1,7 @@
 # Makefile in qss/
 
 CC = gcc
-CFLAGS = -Wall -g -O3   # Opzioni comuni: tutti i warning, informazioni di debug
+CFLAGS = -Wall -g -O3 -march=native -mpopcnt   # Opzioni comuni: tutti i warning, informazioni di debug
 LDFLAGS =               # Opzioni per il linker (se ce ne fossero, es. -lm per libreria matematica)
 
 # Directory per gli header e i sorgenti della libreria

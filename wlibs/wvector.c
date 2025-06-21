@@ -20,17 +20,11 @@
 
 #include "wutils.h"
 
-
 //copy vector with tot_elem
-void wVectorCopy(double wvector_to[], double wvector_from[],int tot_elem){
-    for (int i=0; i<tot_elem; i++){ 
-        if (wvector_from[i] >0) 
-            wvector_to[i]=wvector_from[i]+PLUS_POSITIVE;
-        else
-            wvector_to[i]=wvector_from[i]+PLUS_NEGATIVE;
-    }   
-}
+void wVectorCopy(float wvector_to[], float wvector_from[],int tot_elem){
+    for (int i=0; i<tot_elem; i++) wvector_to[i]=wvector_from[i];
 
+}
 //shift vector byte of MAX_BYTE64 element for bit_maschera position
 void shiftLeft(uint64_t bit_maschera,uint64_t byte[]){
     for (int i=0; i<MAX_BYTE64; i++){
@@ -51,14 +45,23 @@ int cmp_value(const void *a, const void *b) {
     else return 0;
 }
 
+
+
+
+
 //count how many 1 bit are present in x
 int count_ones(uint64_t x) {
-    int count = 0;
-    while (x) {
-        count += x & 1;  
-        x >>= 1;         
-    }
-    return count;
+    //int count = 0;
+    //while (x) {
+    //    count += x & 1;  
+    //    x >>= 1;         
+    //}
+    //int count = 0;
+    //while (x) {
+    //    x &= (x - 1); // rimuove il bit più basso a 1
+    //    count++;
+    //}
+    return __builtin_popcountll(x);
 }
 
 

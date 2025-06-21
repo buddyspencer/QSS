@@ -25,13 +25,13 @@
 #include <time.h>
 #include <math.h>
 #define MAX_PAROLA_VOC  100                  //max length for word in clear in input embedding file
-#define MAX_LEN_VOCABULARY 400000            //total number of rows in input embedding file 
-#define MAX_LEN_QUANTIZATION_RESULT 400000   //total number of rows for list of results by quantization similarity search.  
+#define MAX_LEN_VOCABULARY 3000000            //total number of rows in input embedding file 
+#define MAX_LEN_QUANTIZATION_RESULT 30000   //total number of rows for list of results by quantization similarity search.  
 #define MAX_EMBEDDING 300                    //Number of embedding elements
 #define MAX_BYTE64 5                        //Total bit capacity of the 64-bit element array to store the count of embedding elements. For example for embedding 50 elements it's ok array 64bit with 1 element. For embedding 300 use 5.  
 #define PLUS_POSITIVE 0.0
 #define PLUS_NEGATIVE -0.0
-#define TOTAL_1_CHECK 32                    //tuning parameter. Total number of '1' bits allowed after XOR the search word with the dictionary word. This number could increment number of results obtained from XOR filter. if you see -inf it means you have to increment this value.
+#define TOTAL_1_CHECK 120                    //32tuning parameter. Total number of '1' bits allowed after XOR the search word with the dictionary word. This number could increment number of results obtained from XOR filter. if you see -inf it means you have to increment this value.
                                             
 
 
@@ -42,8 +42,9 @@
 
 struct struct_embedding_voice{
     char     voce[MAX_PAROLA_VOC];          //text in clear 
-    double   embedding[MAX_EMBEDDING];      //array of embedding
-    uint64_t byte[MAX_BYTE64];              //array to bit grouped in 64 bit to perform xor
+    float   embedding[MAX_EMBEDDING];      //array of embedding
+    uint64_t byte[MAX_BYTE64];  //array to bit grouped in 64 bit to perform xor
+    double   norm;
 };
 
 typedef struct struct_embedding_voice EmbeddingVoice;
@@ -56,7 +57,8 @@ EmbeddingVoice embedding_list[MAX_LEN_VOCABULARY];  //this list contains all row
  */
 struct struct_risultato{
     char   voce[MAX_PAROLA_VOC];
-    double valore;
+    float valore;
+    double norm;
 };
 
 typedef struct struct_risultato Risultato;
@@ -70,17 +72,21 @@ Risultato lista_risultato[MAX_LEN_QUANTIZATION_RESULT], lista_risultato_similari
  * LIST OF FUNCTION
  */
 
+double normalization(const float *a);
+
+void read_embedding_bin_file(char *filename);
+
 char check_equals(char * from, char * to);
 
 int wlen(char * name);
 
 void wstrcpy(char * to, char * from);
 
-void wVectorCopy(double to[], double from[],int tot_elem);
+void wVectorCopy(float to[], float from[], int tot_elem);
 
 void shiftLeft(uint64_t bit_maschera,uint64_t byte[]);
 
-double cosine_similarity(const double *a, const double *b, int n);
+float cosine_similarity(const float *a, const float *b, const double norm_a, const double norm_b, int n);
 
 int count_ones(uint64_t x);
 
@@ -94,6 +100,6 @@ void wquantization_similarity_search(const EmbeddingVoice * search_word);
 
 void wsimilarity_search(const EmbeddingVoice * search_word);
 
-void read_embedding(char * name);
+void read_embedding_glove(char * filename);
 
 

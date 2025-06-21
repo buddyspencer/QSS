@@ -17,7 +17,7 @@
 */
 
 
-#include <limits.h>
+
 #include "wutils.h"
 
 /*
@@ -25,26 +25,21 @@
  */
 void wquantization_similarity_search(const EmbeddingVoice * search_word){
     
-    int count = 0 ;
-    int count_bit_1;
+    int count = 0;
     int total_1 = TOTAL_1_CHECK;
-    float result;
+    double result;
     char found ;
-    clock_t start,end;
-    double total_seconds;
-    start = clock();
+    
     for (unsigned long i = 0; i < MAX_LEN_VOCABULARY; i++){
         found = 1;
-        count_bit_1 = 0;
-        for (int y = 0; y < MAX_BYTE64; y++){
-            count_bit_1 = count_bit_1 + count_ones(search_word->byte[y] ^ embedding_list[i].byte[y]);
-            if (count_bit_1 > total_1) {
+        for (int y = 0; y < MAX_BYTE64; y++)
+            if (count_ones(search_word->byte[y] ^ embedding_list[i].byte[y]) > total_1) {
                 found=0;
                 break;
             }   
-        }
+
         if (found==1){
-            result = cosine_similarity(embedding_list[i].embedding,search_word->embedding,embedding_list[i].norm, search_word->norm,MAX_EMBEDDING);
+            result = cosine_similarity(embedding_list[i].embedding,search_word->embedding,MAX_EMBEDDING);
             lista_risultato[count].valore=result;
             wstrcpy(lista_risultato[count].voce,embedding_list[i].voce);
             count=count+1;
@@ -53,21 +48,15 @@ void wquantization_similarity_search(const EmbeddingVoice * search_word){
 
     }   
 
-    end = clock();
-    total_seconds = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("\n\n Quantization time:   %.6f seconds\n", total_seconds);
-    
-    start = clock();
-    qsort(lista_risultato, MAX_LEN_QUANTIZATION_RESULT, sizeof(Risultato), cmp_value);
-    end = clock();
 
-    total_seconds = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("\n Sort time:   %.6f seconds\n", total_seconds);
+
+    qsort(lista_risultato, MAX_LEN_QUANTIZATION_RESULT, sizeof(Risultato), cmp_value);
+    
     for (int i=0; i<30; i++) printf("%s %f \n",lista_risultato[i].voce,lista_risultato[i].valore);
     
 
 
-    printf("\n Total elements found %d \n",count);
+    printf("\ntotal elements %d \n",count);
 
 }
 
@@ -78,31 +67,20 @@ void wquantization_similarity_search(const EmbeddingVoice * search_word){
  */
 void wsimilarity_search(const EmbeddingVoice * search_word){
     int count=0;    
-    float result;
-    clock_t start,end;
-    double total_seconds;
-    start = clock();
+    double result;
     for (unsigned long i = 0; i < MAX_LEN_VOCABULARY; i++){
-        result = cosine_similarity(embedding_list[i].embedding,search_word->embedding,embedding_list[i].norm,search_word->norm,MAX_EMBEDDING);
+        result = cosine_similarity(embedding_list[i].embedding,search_word->embedding,MAX_EMBEDDING);
         lista_risultato_similarity[count].valore=result;
         wstrcpy(lista_risultato_similarity[count].voce,embedding_list[i].voce);
         count=count+1;
     
     }   
-    end = clock();
-    total_seconds = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("\n\n Similarity time:   %.6f seconds\n", total_seconds);
-    
-    start = clock();
     qsort(lista_risultato_similarity, MAX_LEN_VOCABULARY, sizeof(Risultato), cmp_value);
-    end = clock();
-
-    total_seconds = (double)(end - start) / CLOCKS_PER_SEC;
-    printf("\n Sort time:   %.6f seconds\n", total_seconds); 
+   
     for (int i=0; i<30; i++) printf("%s %f \n",lista_risultato_similarity[i].voce,lista_risultato_similarity[i].valore);
 
 
-    printf("\n Total elements found %d \n",count);
+    printf("\ntotal elements %d \n",count);
 
 }
 
@@ -110,31 +88,19 @@ void wsimilarity_search(const EmbeddingVoice * search_word){
 /*
  * calculate classic cosine similarity
  */
-float cosine_similarity(const float *a, const float *b, const double norm_a, const double norm_b, int n) {
-    float dot = 0.0 ;
+double cosine_similarity(const double *a, const double *b, int n) {
+    double dot = 0.0, norm_a = 0.0, norm_b = 0.0;
     //printf("%f %f",a[0],b[0]);
     for (int i = 0; i < n; i++) {
         dot += a[i] * b[i];
+        norm_a += a[i] * a[i];
+        norm_b += b[i] * b[i];
     }
     //printf("%f\n",dot);
     if (norm_a == 0.0 || norm_b == 0.0)
-        return 0.0f; // evita divisione per zero
-    return dot / (float)(norm_a * norm_b);
-}
+        return 0.0; // evita divisione per zero
 
-/*
- * calculate normalization.
- * During the math computation use double cast to avoid loss useful value
- */
-
-double normalization(const float *a) {
-    double  norm = 0.0;
-    //printf("%f %f",a[0],b[0]);
-    for (int i = 0; i < MAX_EMBEDDING; i++) {
-        norm += a[i] * a[i];
-
-    }   
-    return sqrt(norm);
+    return dot / (sqrt(norm_a) * sqrt(norm_b));
 }
 
 
@@ -150,18 +116,17 @@ double normalization(const float *a) {
  *      -1.3343434 -> 0
  *      0.4353343  -> 1
  */
-void read_embedding_glove(char *filename){
+void read_embedding(char * name){
     FILE * fp; 
     unsigned long count;
     char read_voice[MAX_PAROLA_VOC];
-    float read_embedding_vector[MAX_EMBEDDING];
+    double read_embedding[MAX_EMBEDDING];
     unsigned long count_embedding=0;
 
-    if((fp = fopen(filename,"r")) == NULL) {
-        printf("\n ERROR - filaname %s doesn't exist \n",filename);
+    if((fp = fopen(name,"r")) == NULL) {
+        printf("\n ERROR - filaname %s doesn't exist \n",name);
         exit(1);
     }   
-    printf("Reading file binary....\n");
 
     while ((count=fscanf(fp,"%s",read_voice)) != EOF){
         
@@ -169,37 +134,33 @@ void read_embedding_glove(char *filename){
         for (int i = 0 ; i < MAX_BYTE64; i++) embedding_list[count_embedding].byte[i]=0; 
         
         for (int i = 0 ; i<MAX_EMBEDDING; i++){
-            fscanf(fp,"%f",&read_embedding_vector[i]);
-            read_embedding_vector[i] >= 0 ? shiftLeft(1,embedding_list[count_embedding].byte) : shiftLeft(0,embedding_list[count_embedding].byte);
-        
-        } 
-        wVectorCopy(embedding_list[count_embedding].embedding,read_embedding_vector,MAX_EMBEDDING);
-        embedding_list[count_embedding].norm = normalization(embedding_list[count_embedding].embedding);
+            fscanf(fp,"%lf",&read_embedding[i]);
+            read_embedding[i] >= 0 ? shiftLeft(1,embedding_list[count_embedding].byte) : shiftLeft(0,embedding_list[count_embedding].byte);
+        }
+        wVectorCopy(embedding_list[count_embedding].embedding,read_embedding,MAX_EMBEDDING);
         wstrcpy(embedding_list[count_embedding].voce,read_voice);
 
         ++count_embedding;
     }
+
 }
 
-/*
- *read file word2vec binary. Please, pay attention the embedding is float type.
- */
 
-void read_embedding_bin_file(char *filename) {
-    FILE *f = fopen(filename, "rb");
+int readBinFile() {
+    FILE *f = fopen("/Users/walterrosariomolino/Downloads/GoogleNews-vectors-negative300.bin", "rb");
     if (!f) {
-        printf("\n ERROR - filaname %s doesn't exist \n",filename);
-        exit(1);
+        printf("Impossibile aprire il file\n");
+        return 1;
     }   
-    printf("Reading file binary....\n");
+
     // Leggi header
-    unsigned long vocab_size, vector_size;
-    fscanf(f, "%lu %lu\n", &vocab_size, &vector_size);
+    int vocab_size, vector_size;
+    fscanf(f, "%d %d\n", &vocab_size, &vector_size);
+    printf("Vocab size: %d, Vector size: %d\n", vocab_size, vector_size);
     // Buffer per la parola
-    char word[MAX_PAROLA_VOC];
-    //double *vec = malloc(sizeof(double) * vector_size);
-    float read_embedding_vector[MAX_EMBEDDING];
-    float read_embedding_vector_float[MAX_EMBEDDING];
+    char word[256];
+    double *vec = malloc(sizeof(double) * vector_size);
+
     for (unsigned long i = 0; i < vocab_size; i++) {
         // Leggi parola: carattere per carattere fino a spazio
         for (int j = 0 ; j < MAX_BYTE64; j++) embedding_list[i].byte[j]=0;
@@ -213,22 +174,25 @@ void read_embedding_bin_file(char *filename) {
         wstrcpy(embedding_list[i].voce,word);
 
         // Leggi vettore float
-        fread(read_embedding_vector_float, sizeof(float), vector_size, f); 
-
-        for (int tmp=0; tmp<vector_size; tmp++)
-            read_embedding_vector[tmp]=read_embedding_vector_float[tmp];
+        fread(vec, sizeof(double), vector_size, f); 
          
         // Per evitare problemi con i newline nel file,
         // c'è spesso un carattere extra da saltare (newline)
-        //fgetc(f);
+        fgetc(f);
         for (int x = 0 ; x<MAX_EMBEDDING; x++){
-            read_embedding_vector[x] >= 0 ? shiftLeft(1,embedding_list[i].byte) : shiftLeft(0,embedding_list[i].byte);
+            vec[x] >= 0 ? shiftLeft(1,embedding_list[i].byte) : shiftLeft(0,embedding_list[i].byte);
          }
-        wVectorCopy(embedding_list[i].embedding,read_embedding_vector,MAX_EMBEDDING);
-        embedding_list[i].norm = normalization(embedding_list[i].embedding);
+        wVectorCopy(embedding_list[i].embedding,vec,MAX_EMBEDDING);
+        // Stampa prima parola e primo float per test
+        //printf("%s\n",word);
+        //printf("%d\n",i);
+        if (i < 10) {
+           printf("Parola: %s, primo float: %f\n", embedding_list[i].voce, vec[0]);
+        }   
     }   
 
-    //free(vec);
+    free(vec);
     fclose(f);
+    return 0;
 }
 

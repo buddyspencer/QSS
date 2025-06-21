@@ -20,10 +20,18 @@
 
 #include "wlibs/wutils.h"
 
-
 int main(int argc, char *argv[]){
-    char * filename_embedding = argv[1];
-    read_embedding(filename_embedding);
+    if (argc!=3) {
+        printf("Please used --glove <filename.txt> or --word2vec <filename.bin>\n");
+        return 1;
+    }
+    if (check_equals(argv[1],"--glove")) read_embedding_glove(argv[2]);
+
+    else if (check_equals(argv[1],"--word2vec")) read_embedding_bin_file(argv[2]);
+    else {
+        printf("Please used --glove <filename.txt> or --word2vec <filename.bin>\n");
+        return 1;
+    }
 
     uint8_t arr[2];
     arr[0]=1;
@@ -41,7 +49,6 @@ int main(int argc, char *argv[]){
     printf("\nPlease insert a word to search, digit EXIT to terminate \n");
 
     while(scanf("%s", word)==1 && check_equals(word,exit)==0){
-
 
         init_lista_risultato();
 
