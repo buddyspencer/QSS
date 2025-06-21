@@ -4,11 +4,12 @@ This software is an experiment on embedding vector quantization, with the goal o
 
 # 📚 Dataset 👀...🟡 
 
-The experiments use 
-- the GloVe 6B dataset embedding https://nlp.stanford.edu/projects/glove/
-- word2vec https://code.google.com/archive/p/word2vec/
-  
+The experiments are based on 
+- GloVe 6B dataset embedding https://nlp.stanford.edu/projects/glove/
+- Word2vec dataset https://code.google.com/archive/p/word2vec/
 
+The computer used is iMac 2019
+  
 
 # ⚙️ How It Works 👀...🟡 
 
