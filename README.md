@@ -34,11 +34,11 @@ A bitwise XOR is computed between the quantized embedding of the input word and 
 
 If the number of different bits (i.e., number of 1s in the XOR result) is ≤ TOTAL_1_CHECK, the candidate word is selected.
 
-Use TOTAL_1_CHECK to tune your solution.
-
-These selected words, are put into a vector  with length = MAX_LEN_QUANTIZATION_RESULT and for them the cosine similarity is calculated using the original (non-quantized) embeddings.
+These selected words are put into a vector with length = MAX_LEN_QUANTIZATION_RESULT and for each of them the cosine similarity is calculated using the original (non-quantized) embeddings.
 
 The results are sorted in descending order by similarity.
+
+Use TOTAL_1_CHECK and MAX_LEN_QUANTIZATION_RESULT to tune your solution.
 
 ## Standard Cosine Similarity Search:
 As a baseline, a cosine similarity search is performed using the input word’s original embedding against all embeddings, without quantization.
@@ -59,7 +59,11 @@ the experimentation has been done on Imac 2018 with 3,6 GHz Intel Core i3 quad-c
 
 # 📊 Preliminary Results 👀...🟡 
 
-While only a limited number of experiments have been conducted so far, the initial results are promising:
+While only a limited number of experiments have been conducted so far, the initial results are promising.
+
+Parameters used:
+- MAX_LEN_QUANTIZATION_RESULT = 60000
+- TOTAL_1_CHECK = 120
 
 ## with GloVe:
 Word: "hello"
@@ -75,11 +79,6 @@ Word: "italy"
 → ⚡ 3× faster
 
 ## with word2vec:
-
-with parameters:
-- MAX_LEN_QUANTIZATION_RESULT = 60000
-- TOTAL_1_CHECK = 120
-  
 word "hello"
 → ✅ 100% accuracy on the top 30
 → ⚡ 18× faster
