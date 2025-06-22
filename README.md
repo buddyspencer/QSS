@@ -36,7 +36,7 @@ If the number of different bits (i.e., number of 1s in the XOR result) is ≤ TO
 
 Use TOTAL_1_CHECK to tune your solution.
 
-For these selected words, the cosine similarity is calculated using the original (non-quantized) embeddings.
+These selected words, are put into a vector  with length = MAX_LEN_QUANTIZATION_RESULT and for them the cosine similarity is calculated using the original (non-quantized) embeddings.
 
 The results are sorted in descending order by similarity.
 
@@ -75,6 +75,11 @@ Word: "italy"
 → ⚡ 3× faster
 
 ## with word2vec:
+
+with parameters:
+- MAX_LEN_QUANTIZATION_RESULT = 60000
+- TOTAL_1_CHECK = 120
+  
 word "hello"
 → ✅ 100% accuracy on the top 30
 → ⚡ 18× faster
