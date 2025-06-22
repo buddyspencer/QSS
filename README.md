@@ -38,7 +38,7 @@ Once the embeddings are loaded, the program prompts the user to input a word.
 
 If the word is found in the embedding dictionary (using a linear search—not optimized as it's not critical to this experiment), the analysis proceeds.
 
-### Vector search (QSS vs Cosine Similarity)
+## Vector search (QSS vs Cosine Similarity)
 For the input word, two types of vector searches are performed:
 
 ### QSS (Quantized Similarity Search):
@@ -52,7 +52,7 @@ The results are sorted in descending order by similarity.
 
 Use TOTAL_1_CHECK and MAX_LEN_QUANTIZATION_RESULT to tune your solution.
 
-## Standard Cosine Similarity Search:
+### Standard Cosine Similarity Search:
 As a baseline, a cosine similarity search is performed using the input word’s original embedding against all embeddings, without quantization.
 
 # 🧪 Goals of the Experiment 👀...🟡 
