@@ -51,16 +51,6 @@ int cmp_value(const void *a, const void *b) {
 
 //count how many 1 bit are present in x
 int count_ones(uint64_t x) {
-    //int count = 0;
-    //while (x) {
-    //    count += x & 1;  
-    //    x >>= 1;         
-    //}
-    //int count = 0;
-    //while (x) {
-    //    x &= (x - 1); // rimuove il bit più basso a 1
-    //    count++;
-    //}
     return __builtin_popcountll(x);
 }
 

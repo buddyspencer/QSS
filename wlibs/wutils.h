@@ -26,7 +26,7 @@
 #include <math.h>
 #define MAX_PAROLA_VOC  100                  //max length for word in clear in input embedding file
 #define MAX_LEN_VOCABULARY 3000000            //total number of rows in input embedding file 
-#define MAX_LEN_QUANTIZATION_RESULT 60000   //total number of rows for list of results by quantization similarity search.  
+#define MAX_LEN_QUANTIZATION_RESULT 300000   //total number of rows for list of results by quantization similarity search.  
 #define MAX_EMBEDDING 300                    //Number of embedding elements
 #define MAX_BYTE64 5                        //Total bit capacity of the 64-bit element array to store the count of embedding elements. For example for embedding 50 elements it's ok array 64bit with 1 element. For embedding 300 use 5.  
 #define PLUS_POSITIVE 0.0
