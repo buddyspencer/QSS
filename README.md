@@ -38,10 +38,10 @@ Once the embeddings are loaded, the program prompts the user to input a word.
 
 If the word is found in the embedding dictionary (using a linear search—not optimized as it's not critical to this experiment), the analysis proceeds.
 
-## Vector search (QSS vs Cosine Similarity)
+### Vector search (QSS vs Cosine Similarity)
 For the input word, two types of vector searches are performed:
 
-## QSS (Quantized Similarity Search):
+### QSS (Quantized Similarity Search):
 A bitwise XOR is computed between the quantized embedding of the input word and all the quantized embeddings in memory.
 
 If the number of different bits (i.e., number of 1s in the XOR result) is ≤ TOTAL_1_CHECK, the candidate word is selected.
