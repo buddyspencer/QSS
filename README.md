@@ -5,10 +5,9 @@ This software is an experiment on embedding vector quantization, with the goal o
 # 📚 Dataset 👀...🟡 
 
 The experiments are based on 
-- GloVe 6B dataset embedding https://nlp.stanford.edu/projects/glove/
-- Word2vec dataset https://code.google.com/archive/p/word2vec/
+- GloVe 6B dataset embedding https://nlp.stanford.edu/projects/glove/   --> file glove.6B.300d.txt
+- Word2vec dataset https://code.google.com/archive/p/word2vec/   --> file GoogleNews-vectors-negative300.bin
 
-The computer used is iMac 2019
   
 
 # ⚙️ How It Works 👀...🟡 
@@ -56,7 +55,7 @@ Evaluate the scalability of the method with increasing embedding dimensions.
 
 Word lookup in the embedding dictionary is performed linearly. This is not optimized intentionally, as the goal is to assess the impact of quantization on search quality, not access speed.
 
-
+the experimentation has been done on Imac 2018 with 3,6 GHz Intel Core i3 quad-core
 
 # 📊 Preliminary Results 👀...🟡 
 
