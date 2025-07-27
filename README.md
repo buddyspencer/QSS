@@ -1,6 +1,6 @@
 # 🔍 QSS - Quantized Similarity Search 
 
-QSS is a vector search engine written in C that uses a 1-bit binary representation for embeddings and an XOR + popcount pipeline to achieve high-precision approximate search, followed by a re-ranking phase using cosine similarity.
+QSS is a vector search engine written in C that uses a 1-bit binary representation for embeddings and calculate Hamming's distance with an XOR + popcount pipeline to achieve high-precision approximate search, followed by a re-ranking phase using cosine similarity.
 
 This software is an experiment on embedding vector quantization, with the goal of analyzing its accuracy and performance compared to standard floating-point representations.
 
