@@ -21,7 +21,11 @@
 #include "wutils.h"
 
 /*
+ * This function perform linear semantic search for the search_word in 2 steps:
+ * 1° STEP: check if the word i_esima in the list in xor with search_word have different bits <= then TOTAL_1_CHECK
+ * 2° STEP: for the word found in the previous step, put it into lista_risultato and provide the cosine_similarity with search_word
  * 
+ * NEXT STEP this search should be optimized with a structure like BK-Tree
  */
 void wquantization_similarity_search(const EmbeddingVoice * search_word){
     
@@ -36,6 +40,8 @@ void wquantization_similarity_search(const EmbeddingVoice * search_word){
     for (unsigned long i = 0; i < MAX_LEN_VOCABULARY; i++){
         found = 1;
         count_bit_1 = 0;
+        
+        //1° STEP: check if the xor contains number of 1 > TOTAL_1_CHECK in this case ignore word in the vocabulary else put the word in lista_risultato and calculate cosine_similarity   
         for (int y = 0; y < MAX_BYTE64; y++){
             count_bit_1 = count_bit_1 + count_ones(search_word->byte[y] ^ embedding_list[i].byte[y]);
             if (count_bit_1 > total_1) {
@@ -43,6 +49,7 @@ void wquantization_similarity_search(const EmbeddingVoice * search_word){
                 break;
             }   
         }
+        //2° STEP: put the word in lista_risultato anche calculate cosin_similarity
         if (found==1){
             result = cosine_similarity(embedding_list[i].embedding,search_word->embedding,embedding_list[i].norm, search_word->norm,MAX_EMBEDDING);
             lista_risultato[count].valore=result;
@@ -58,7 +65,7 @@ void wquantization_similarity_search(const EmbeddingVoice * search_word){
     printf("\n\n Quantization time:   %.6f seconds\n", total_seconds);
     
     start = clock();
-    qsort(lista_risultato, MAX_LEN_QUANTIZATION_RESULT, sizeof(Risultato), cmp_value);
+    qsort(lista_risultato, MAX_LEN_QUANTIZATION_RESULT, sizeof(Risultato), cmp_value);  //perform sort on value of cosine_similaty
     end = clock();
 
     total_seconds = (double)(end - start) / CLOCKS_PER_SEC;
@@ -73,7 +80,7 @@ void wquantization_similarity_search(const EmbeddingVoice * search_word){
 
 
 /*
- * search cosise similarity with search word to all embedding list
+ * search cosine similarity with search word to all embedding list
  * this function is used to compare similarity search vs quantization similarity search
  */
 void wsimilarity_search(const EmbeddingVoice * search_word){
@@ -149,6 +156,7 @@ double normalization(const float *a) {
  *      for example:
  *      -1.3343434 -> 0
  *      0.4353343  -> 1
+ *  NEXT STEP this structure should be optimized with a structure like BK-Tree
  */
 void read_embedding_glove(char *filename){
     FILE * fp; 
@@ -182,7 +190,15 @@ void read_embedding_glove(char *filename){
 }
 
 /*
- *read file word2vec binary. Please, pay attention the embedding is float type.
+ * read file word2vec binary. Please, pay attention the embedding is float type.
+ * the word2vect is a binary file with this structure:
+ * 
+ * HEADER:              | vocabulary size | vector size | 
+ * BODY for each word:  |word in string | vector with 300 floats elements |
+ * 
+ * all elements in BODY are put embedding_list array with quantization.
+ * 
+ * NEXT STEP this structure should be optimized with a structure like BK-Tree
  */
 
 void read_embedding_bin_file(char *filename) {
