@@ -4,6 +4,10 @@ QSS is a vector search engine written in C that uses a 1-bit binary representati
 
 This software is an experiment on embedding vector quantization, with the goal of analyzing its accuracy and performance compared to standard floating-point representations.
 
+Next steps 
+I plan to consider a structure that allows for faster searching using structures like bk-tree.
+
+
 # Features
 🔍 High-speed vector search (up to 18× faster)
 
